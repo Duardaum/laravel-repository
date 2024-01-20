@@ -12,7 +12,7 @@ composer require duardaum/laravel-repository
 
 ## Usage
 
-Add usege here..
+Soon we'll put more detailed examples, but for now, looking into a [tests](./tests/Feature/BaseRepositoryTest.php) folder.
 
 ## Contributing
 
