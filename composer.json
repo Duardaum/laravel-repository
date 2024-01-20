@@ -1,6 +1,7 @@
 {
     "name": "duardaum/laravel-repository",
     "description": "A simple Repository and Service layer to Laravel and Lumen Application",
+    "license": "MIT",
     "authors": [
         {
             "name": "Eduardo Santos Jr",
