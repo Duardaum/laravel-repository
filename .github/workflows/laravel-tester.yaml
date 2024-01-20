@@ -28,6 +28,8 @@ jobs:
             testbench: 6.*
           - laravel: 9.*
             testbench: 7.*
+          - laravel: 10.*
+            testbench: 8.*
 
     name: php${{ matrix.php }} - laravel${{ matrix.laravel }} - ${{ matrix.dependency_version }}
     steps:
