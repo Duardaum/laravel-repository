@@ -43,4 +43,4 @@ jobs:
           composer update --${{ matrix.dependency_version }} --prefer-dist --no-interaction
 
       - name: Running Tests
-        run: ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit ./test --stop-on-defect
