@@ -1,0 +1,27 @@
+{
+    "name": "duardaum/laravel-repository",
+    "description": "A simple Repository and Service layer to Laravel and Lumen Application",
+    "authors": [
+        {
+            "name": "Eduardo Santos Jr",
+            "email": "mr.eduardosantos@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.41"
+    },
+    "autoload": {
+        "psr-4": {
+            "Duardaum\\LaravelRepository\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Duardaum\\LaravelRepository\\Tests\\": "tests/",
+            "Duardaum\\LaravelRepository\\Factories\\": "database/factories/"
+        }
+    }
+}
