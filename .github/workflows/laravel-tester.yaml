@@ -38,9 +38,10 @@ jobs:
 
       - name: Setup the PHP
         uses: shivammathur/setup-php@v2
-        php-version: ${{ matrix.php }}
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmatch, soap, intl, gd, exif, iconv, imagick
-        coverage: none
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmatch, soap, intl, gd, exif, iconv, imagick
+          coverage: none
 
       - name: Install dependencies
         run: |
