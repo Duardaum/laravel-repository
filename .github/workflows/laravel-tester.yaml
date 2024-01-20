@@ -1,0 +1,51 @@
+name: Testing againt multiples Laravel & PHP versions
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.0, 8.1]
+        laravel: [8.*, 9.*, 10.*]
+        dependency-version: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 8.*
+            php: 8.0
+            testbench: 6.*
+          - laravel: 9.*
+            php: 8.0
+            testbench: 7.*
+          - laravel: 10.*
+            php: 8.1
+            testbench: 8.*
+
+    name: php${{ matrix.php }} - laravel${{ matrix.laravel }}
+    steps:
+      - name: Checkout the Code
+        uses: actions/checkout@v4
+
+      - name: Caching dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup the PHP
+        uses: shivammathur/setup-php@v2
+        php-version: ${{ matrix.php }}
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmatch, soap, intl, gd, exif, iconv, imagick
+        coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+
+      - name: Running Tests
+        run: ./vendor/bin/phpunit
