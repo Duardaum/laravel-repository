@@ -535,4 +535,32 @@ class BaseRepositoryTest extends TestCase
         $this->assertEquals($model2->content, 'Test 1');
     }
 
+    public function test_changing_query_scope()
+    {
+        //prepare
+        $inserts = [
+            ['content' => 'Test 1', 'created_at' => now(), 'updated_at' => now()],
+            ['content' => 'Test 2', 'created_at' => now(), 'updated_at' => now()],
+            ['content' => 'Test 3', 'created_at' => now(), 'updated_at' => now()],
+            ['content' => 'Test 4', 'created_at' => now(), 'updated_at' => now()],
+        ];
+        $this->_repository->createMany($inserts);
+
+        //Act
+        $this->_repository->deleteWhere(['content', '=', 'Test 1']);
+        $this->_repository->deleteWhere(['content', '=', 'Test 2']);
+        $model = $this->_repository->onlyTrashed()->findFirst(['content', '=', 'Test 1']);
+        $model2 = $this->_repository->findFirst(['content', '=', 'Test 3']);
+        $model3 = $this->_repository->newQuery()->findFirst(['content', '=', 'Test 1']);
+        $model4 = $this->_repository->findFirst(['content', '=', 'Test 3']);
+
+        //Assert
+        $this->assertNotNull($model);
+        $this->assertSoftDeleted($model);
+        $this->assertNull($model2);
+        $this->assertNull($model3);
+        $this->assertNotNull($model4);
+        $this->assertNotSoftDeleted($model4);
+    }
+
 }
