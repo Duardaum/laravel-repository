@@ -4,7 +4,7 @@ namespace Duardaum\LaravelRepository\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelRepositoryServiceProvider extends ServiceProvider
+class TestRepositoryServiceProvider extends ServiceProvider
 {
 
     public function boot()

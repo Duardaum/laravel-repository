@@ -18,7 +18,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function getPackageProviders($app)
     {
         return [
-            \Duardaum\LaravelRepository\Providers\LaravelRepositoryServiceProvider::class,
+            \Duardaum\LaravelRepository\Providers\TestRepositoryServiceProvider::class,
         ];
     }
 
