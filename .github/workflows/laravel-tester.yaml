@@ -1,4 +1,4 @@
-name: Testing
+name: Laravel Tests
 
 on:
   pull_request:
@@ -17,6 +17,9 @@ jobs:
         exclude:
           - laravel: 8.*
             dependency_version: prefer-lowest
+          - laravel: 9.*
+            dependency_version: prefer-lowest
+            php: 8.2
           - laravel: 8.*
             php: 8.2
           - laravel: 8.*

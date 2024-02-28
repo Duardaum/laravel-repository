@@ -1,4 +1,4 @@
-name: Testing
+name: Lumen Tests
 
 on:
   pull_request:
@@ -17,6 +17,9 @@ jobs:
         exclude:
           - lumen: 8.*
             dependency_version: prefer-lowest
+          - lumen: 9.*
+            dependency_version: prefer-lowest
+            php: 8.2
           - lumen: 8.*
             php: 8.2
           - lumen: 8.*
@@ -33,7 +36,7 @@ jobs:
           - lumen: 10.*
             testbench: 8.*
 
-    name: php${{ matrix.php }} - lumen{{ matrix.lumen }} - ${{ matrix.dependency_version }}
+    name: php${{ matrix.php }} - lumen${{ matrix.lumen }} - ${{ matrix.dependency_version }}
     steps:
       - name: Checkout the Code
         uses: actions/checkout@v4
