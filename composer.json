@@ -9,7 +9,10 @@
         }
     ],
     "require": {
-        "php": "^8.0|8.3"
+        "php": ">=8.0",
+        "illuminate/database": ">=8.0",
+        "illuminate/contracts": ">=8.0",
+        "illuminate/support": ">=8.0"
     },
     "require-dev": {
         "orchestra/testbench": "^6.41"
