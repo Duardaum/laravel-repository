@@ -3,7 +3,6 @@
 namespace Duardaum\LaravelRepository\Repositories;
 
 use Duardaum\LaravelRepository\Contracts\Repositories\BaseRepositoryInterface;
-use JetBrains\PhpStorm\Pure;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -131,7 +130,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this;
     }
 
-    #[Pure]
     private function getCurrentQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return $this->_query->clone();
