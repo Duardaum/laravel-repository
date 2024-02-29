@@ -142,7 +142,6 @@ class MessageRepository extends BaseRepository implements MessageRepositoryInter
 ```
 Finally, let's register the repository to be used on the application: 
 ```php
-<?php
 // app/Providers/RepositoryServiceProvider.php
 ...
     public function register()
