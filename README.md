@@ -2,6 +2,8 @@
 
 A simple Repository and Service layer to Laravel and Lumen Application
 
+---
+
 ## Compatibility
 
 |               | Version |      PHP      |      Dependency Version      |
@@ -23,13 +25,11 @@ composer require duardaum/laravel-repository
 ## Configuration
 
 
-On your laravel/lumen application, create a new Service Provider. \
+In your Laravel/Lumen application, create a new Service Provider. \
 This Service Provider will be the place where you'll register all your Repositories. \
 You can register your repositories in the **AppServiceProvider** if you wish, but for keep things separated and for the possibility the Service Provider be very large, we recommend putting then separated.
 
 ```php
-<?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -55,9 +55,7 @@ And then, register the new Service Provider in your application:
 On Lumen:
 ```php
 //bootstrap/app.php
-...
 $app->register(App\Providers\RepositoryServiceProvider::class);
-...
 ```
 On Laravel:
 
@@ -73,8 +71,10 @@ On Laravel:
 
 ## Usage
 
-The Repository Pattern is a designer pattern that became very popular with the pass of years. It's a very nice e good way to organize access data and logic in one place, keeping another parts of your application responsable for what they do best, specially if you are using another Designer Pattern like S.O.L.I.D and Clean Code. \
-With this in mind, we create this very simple but yet powerfully package, for you to centralize all your data access in very simple way.
+The Repository Pattern is a designer pattern that became very popular with the pass of years. 
+It's a very nice and good way to organize access data and logic in one place, keeping another parts of your application responsible for what they do best, 
+specially if you are using another Designer Patterns like S.O.L.I.D and Clean Code. \
+With this in mind, we create this very simple but yet powerfully package, for you to centralize all your data access in a very simple way.
 
 ### Model, Repository & Interface
 
@@ -93,7 +93,6 @@ CREATE TABLE messages (
 First, let's create a Model:
 
 ```php
-<?php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -114,10 +113,8 @@ class Message extends Model
 
 }
 ```
-Now, let's create an Interface for the Repository. All interfaces **MUST** to extends from **BaseRepositoryInterface**:
+Then, let's create an Interface for the Repository. All interfaces **MUST** to extends from **BaseRepositoryInterface**:
 ```php
-<?php
-
 namespace App\Contracts\Repositories;
 
 use Duardaum\LaravelRepository\Contracts\Repositories\BaseRepositoryInterface;
@@ -130,8 +127,6 @@ interface MessageRepositoryInterface extends BaseRepositoryInterface
 And let's create the Repository. All repositories **MUST** to extends from **BaseRepository** and implements an interface the was extended from **BaseRepositoryInterface**. \
 For the repository know what table they should run the queries, we need to inform a Model for the Repository:
 ```php
-<?php
-
 namespace App\Repositories;
 
 use Duardaum\LaravelRepository\Repositories\BaseRepository;
@@ -156,16 +151,15 @@ Finally, let's register the repository to be used on the application:
     }
 ...
 ```
-This structure with Repository & Interface is very helpfull, if you need to make a different implementation of the same repository. The contract of the repository keeps the same and no affect you application, need to go in one place to replace all.
+This structure with Repository & Interface is very helpful, if you need to make a different implementation of the same repository. 
+The contract of the repository keeps the same and no affect you application, needing to go in one place to replace all.
 
 ### Basic usage
 
-You can use the inject the interface in constructors/methods to instantiate the repository or use the Service Container to do it:
+You can inject the Interface in constructors/methods to instantiate the Repository or use the Service Container to do it:
 
 ```php
-<?php
 // 1. On constructor
-...
 use App\Contracts\Repositories\MessageRepositoryInterface;
 
 class SomeClass {
@@ -176,15 +170,13 @@ class SomeClass {
 }
 
 // 2. With Service Container
-
 $repo_message = app(\App\Contracts\Repositories\MessageRepositoryInterface::class);
 ```
 
 ### Create, Update and Delete
-To make this operations is very simple:
+To make these operations is very simple:
 
 ```php
-<?php
 // create
 $message = $repo_message->create(['content' => 'Test 1']);
 //update
@@ -196,22 +188,21 @@ $repo_message->forceDelete($message->id);
 ```
 
 ### Read
-One of the great features that have on this package, is a possibility to read data from any part of the table (activate, deactivate of both).
-By default, the repository will get data only for active records (newQuery). To get from trash (deactivate) or both, there is a easy way to do it:
+One of the greatest features that have on this package, is a possibility to read data from different states (activate, deactivate of both) in the same operation with minimal effort.
+By default, the repository will get data only for active records (newQuery). To get from trash (deactivate) or both, there is an easy way to do it:
 
 ```php
-//1. From trash (deactivate)
+//From trash (deactivate)
 $data = $repo_message->onlyTrashed()->findWhere(...);
-// the next line will keep on trashed context, so you don't need to put 'onlyTrashed' again:
+//The next line will keep on trashed context, so you don't need to put 'onlyTrashed' again:
 $data2 = $repo_message->findWhere(...);
-//if you want to change query context on next line, just call 'newQuery' or 'withTrashed' and the context will change:
+//If you want to change query context on next line, just call 'newQuery' or 'withTrashed' and the context will change:
 $data3 = $repo_message->newQuery()->findWhere(...);
 $data4 = $repo_message->findWhere(...); // are running on 'newQuery' context
 ```
 ### Custom methods
 To create a custom method on repository is very simple, and you can take advantage of the build-in methods of the base repository to do it:
 ```php
-<?php
 // app/Repositories/MessageRepository.php
 ...
     public function getAllDeactived(): \Illuminate\Database\Eloquent\Collection
