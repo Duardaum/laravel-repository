@@ -12,6 +12,18 @@ interface BaseRepositoryInterface
 
     public function createMany(array $data): bool;
 
+    /**
+     * Import CSV file data to table
+     *
+     * @param string $path CSV file path
+     * @param array<string, int>|array<empty, empty> $columns To-From key-value: To table column, From CSV column
+     * @param ?callable $rowGenerate Callable to generate (transform) each row to insert on table
+     * @param \stdClass|array|null $options Aditional info and settings params
+     *
+     * @return int Number of the batch inserted
+     */
+    public function importFile(string $path, array $columns, ?callable $rowGenerate, null|\stdClass|array $options): int;
+
     public function update(array $data, int|string $id): int;
 
     public function updateOrCreate(array $data, array $condition): \Illuminate\Database\Eloquent\Model;

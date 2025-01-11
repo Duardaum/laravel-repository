@@ -42,6 +42,65 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->_model->insert($data);
     }
 
+    public function importFile(string $path, array $columns, ?callable $rowGenerate, null|\stdClass|array $options): int
+    {
+        $opt = null;
+        if(!is_null($options))
+            $opt = ($options instanceof \stdClass ? $options : (object) $options);
+
+        $batchs = 0;
+        foreach(self::generateDataToImport($path, $columns, $rowGenerate, $opt) as $data)
+        {
+            $this->_model->insert($data);
+            $batchs++;
+        }
+
+        return $batchs;
+    }
+
+    private function generateDataToImport(string $path, array $columns, ?callable $rowGenerate, ?object $options): \Generator
+    {
+        /**
+         * Generate a row that will to
+         * map column's file to column's table
+         */
+        if(is_null($rowGenerate))
+        {
+            $generateRowFn = function($row) use ($columns){
+                $r = [];
+
+                foreach($columns as $table => $file)
+                    $r[$table] = $row[$file];
+
+                return $r;
+            };
+        }
+        else{
+            $generateRowFn = $rowGenerate;
+        }
+
+        /**
+         * Generate batch of data to insert on table
+         */
+        $file = fopen($path, 'r');
+        $data = [];
+
+        for($i = 1; ($row = fgetcsv($file, null, ($options->separator ?? ','))) !== false; $i++) {
+            $data[] = $generateRowFn($row);
+
+            if($i % ($options->chunkSize ?? 1000) == 0){
+                yield $data;
+                $data = [];
+            }
+
+        }
+
+        if(!empty($data))
+            yield $data;
+
+        fclose($file);
+    }
+
     public function update(array $data, int|string $id): int
     {
         return $this->_model->find($id)->update($data);
@@ -162,7 +221,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return self::getCurrentQuery()->select($columns)->where($find)->get();
     }
 
-    public function findWhereLimit(array $where, int $limit = 10, array $columns = ['*']): \Illuminate\Database\Eloquent\Collection
+    public function findWhereLimit(array $where, int $limit = self::DEFAULT_PAGINATOR_LIMIT, array $columns = ['*']): \Illuminate\Database\Eloquent\Collection
     {
         $find = (is_array($where[0]) ? $where : [$where]);
         return self::getCurrentQuery()->select($columns)->where($find)->limit($limit)->get();
