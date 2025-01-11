@@ -17,17 +17,15 @@ jobs:
         exclude:
           - laravel: 8.*
             dependency_version: prefer-lowest
-          - laravel: 9.*
-            php: 8.2
-            dependency_version: prefer-lowest
-          - laravel: 11.*
-            dependency_version: prefer-lowest
           - laravel: 8.*
             php: 8.2
           - laravel: 8.*
             php: 8.3
           - laravel: 8.*
             php: 8.4
+          - laravel: 9.*
+            php: 8.2
+            dependency_version: prefer-lowest
           - laravel: 9.*
             php: 8.3
           - laravel: 9.*
@@ -36,6 +34,8 @@ jobs:
             php: 8.0
           - laravel: 10.*
             php: 8.4
+          - laravel: 11.*
+            dependency_version: prefer-lowest
           - laravel: 11.*
             php: 8.0
           - laravel: 11.*

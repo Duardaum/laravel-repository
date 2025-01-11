@@ -11,23 +11,33 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1, 8.2, 8.3]
-        lumen: [8.*, 9.*, 10.*]
+        lumen: [8.*, 9.*, 10.*, 11.*]
+        php: [8.0, 8.1, 8.2, 8.3, 8.4]
         dependency_version: [prefer-lowest, prefer-stable]
         exclude:
           - lumen: 8.*
             dependency_version: prefer-lowest
+          - lumen: 8.*
+            php: 8.2
+          - lumen: 8.*
+            php: 8.3
+          - lumen: 8.*
+            php: 8.4
           - lumen: 9.*
+            php: 8.2
             dependency_version: prefer-lowest
-            php: 8.2
-          - lumen: 8.*
-            php: 8.2
-          - lumen: 8.*
-            php: 8.3
           - lumen: 9.*
             php: 8.3
+          - lumen: 9.*
+            php: 8.4
           - lumen: 10.*
             php: 8.0
+          - lumen: 10.*
+            php: 8.4
+          - lumen: 11.*
+            php: 8.0
+          - lumen: 11.*
+            php: 8.1
         include:
           - lumen: 8.*
             testbench: 6.*
@@ -35,8 +45,10 @@ jobs:
             testbench: 7.*
           - lumen: 10.*
             testbench: 8.*
+          - lumen: 11.*
+            testbench: 9.*
 
-    name: php${{ matrix.php }} - lumen${{ matrix.lumen }} - ${{ matrix.dependency_version }}
+    name: lumen${{ matrix.lumen }} - php${{ matrix.php }} - ${{ matrix.dependency_version }}
     steps:
       - name: Checkout the Code
         uses: actions/checkout@v4
