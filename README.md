@@ -13,6 +13,7 @@ A simple Repository and Service layer to Laravel and Lumen Application
 | Laravel/Lumen |   9.*   |   8.0, 8.2    |        prefer-stable         |
 | Laravel/Lumen |   9.*   |      8.1      | prefer-lowest, prefer-stable |
 | Laravel/Lumen |  10.*   | 8.1, 8.2, 8.3 | prefer-lowest, prefer-stable |
+| Laravel/Lumen |  11.*   | 8.2, 8.3, 8.4 |        prefer-stable         |
 
 ## Installation
 
