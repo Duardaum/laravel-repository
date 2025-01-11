@@ -35,6 +35,8 @@ jobs:
           - lumen: 10.*
             php: 8.4
           - lumen: 11.*
+            dependency_version: prefer-lowest
+          - lumen: 11.*
             php: 8.0
           - lumen: 11.*
             php: 8.1
