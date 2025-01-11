@@ -40,6 +40,25 @@ class BaseRepositoryTest extends TestCase
         $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 2);
     }
 
+    public function test_import_file_basic()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_test.csv';
+        $columns = [
+            'content' => 0,
+        ];
+
+        //Act
+        $options = [
+            'chunkSize' => 50
+        ];
+        $result = $this->_repository->importFile($path, $columns, null, $options);
+
+        //Assert
+        $this->assertEquals(2, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 100);
+    }
+
     public function test_update_method()
     {
         //prepare
