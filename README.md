@@ -3,7 +3,18 @@
 A simple Repository and Service layer to Laravel and Lumen Application
 
 ---
+## Summary
 
+- [Compatibility](#compatibility)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Models, Repositories and Interfaces](#model-repository--interface)
+  - [Basic Usage](#basic-usage)
+  - [Create, Update and Delete](#create-update-and-delete)
+  - [Read](#read)
+  - [Custom Methods](#custom-methods)
+---
 ## Compatibility
 
 |               | Version |      PHP      |      Dependency Version      |
@@ -26,7 +37,7 @@ composer require duardaum/laravel-repository
 ## Configuration
 
 
-In your Laravel/Lumen application, create a new Service Provider. \
+In your Laravel/Lumen application, create a new `Service Provider` . \
 This Service Provider will be the place where you'll register all your Repositories. \
 You can register your repositories in the **AppServiceProvider** if you wish, but for keep things separated and for the possibility the Service Provider be very large, we recommend putting then separated.
 
@@ -72,7 +83,7 @@ On Laravel:
 
 ## Usage
 
-The Repository Pattern is a designer pattern that became very popular with the pass of years. 
+The `Repository Pattern` is a designer pattern that became very popular with the pass of years. 
 It's a very nice and good way to organize access data and logic in one place, keeping another parts of your application responsible for what they do best, 
 specially if you are using another Designer Patterns like S.O.L.I.D and Clean Code. \
 With this in mind, we create this very simple but yet powerfully package, for you to centralize all your data access in a very simple way.

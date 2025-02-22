@@ -42,11 +42,18 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->_model->insert($data);
     }
 
-    public function importFile(string $path, array $columns, ?callable $rowGenerate, null|\stdClass|array $options): int
+    public function importFile(string $path, array $columns, ?callable $rowGenerate = null, null|\stdClass|array $options = null): int
     {
-        $opt = null;
+        $opt = (object) [];
         if(!is_null($options))
             $opt = ($options instanceof \stdClass ? $options : (object) $options);
+
+        /**
+         * Defines default options values
+         */
+        $opt->separator = ($opt->separator ?? ',');
+        $opt->chunkSize = (isset($opt->chunkSize) ? min($opt->chunkSize, 1000) : 1000);
+        $opt->hasHeader = (isset($opt->hasHeader) && (bool)$opt->hasHeader);
 
         $batchs = 0;
         foreach(self::generateDataToImport($path, $columns, $rowGenerate, $opt) as $data)
@@ -58,7 +65,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $batchs;
     }
 
-    private function generateDataToImport(string $path, array $columns, ?callable $rowGenerate, ?object $options): \Generator
+    private function generateDataToImport(string $path, array $columns, ?callable $rowGenerate, object $options): \Generator
     {
         /**
          * Generate a row that will to
@@ -84,11 +91,20 @@ abstract class BaseRepository implements BaseRepositoryInterface
          */
         $file = fopen($path, 'r');
         $data = [];
+        $header = false;
 
-        for($i = 1; ($row = fgetcsv($file, null, ($options->separator ?? ','))) !== false; $i++) {
+        for($i = 1; ($row = fgetcsv($file, null, $options->separator)) !== false; $i++) {
+            if(!$header && $options->hasHeader)
+            {
+                $header = true;
+                $i--;
+                continue;
+            }
+
+
             $data[] = $generateRowFn($row);
 
-            if($i % ($options->chunkSize ?? 1000) == 0){
+            if($i % $options->chunkSize == 0){
                 yield $data;
                 $data = [];
             }

@@ -43,20 +43,132 @@ class BaseRepositoryTest extends TestCase
     public function test_import_file_basic()
     {
         //Prepare
-        $path = __DIR__ . '/import_file_test.csv';
+        $path = __DIR__ . '/import_file_100.csv';
         $columns = [
+            //table column => file column position
             'content' => 0,
         ];
 
         //Act
         $options = [
-            'chunkSize' => 50
+            'separator' => ',',
+            'chunkSize' => 50,
+            'hasHeader' => true,
         ];
         $result = $this->_repository->importFile($path, $columns, null, $options);
 
         //Assert
         $this->assertEquals(2, $result);
         $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 100);
+    }
+
+    public function test_import_file_1000_lines()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_1000.csv';
+        $columns = [
+            //table column => file column position
+            'content' => 0,
+        ];
+
+        //Act
+        $options = [
+            'separator' => ',',
+            'chunkSize' => 1000,
+            'hasHeader' => false,
+        ];
+        $result = $this->_repository->importFile($path, $columns, null, $options);
+
+        //Assert
+        $this->assertEquals(1, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 1000);
+    }
+
+    public function test_import_file_10000_lines()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_10000.csv';
+        $columns = [
+            //table column => file column position
+            'content' => 0,
+        ];
+
+        //Act
+        $options = [
+            'separator' => ',',
+            'chunkSize' => 1000,
+            'hasHeader' => false,
+        ];
+        $result = $this->_repository->importFile($path, $columns, null, $options);
+
+        //Assert
+        $this->assertEquals(10, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 10000);
+    }
+
+    public function test_import_file_100000_lines()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_100000.csv';
+        $columns = [
+            //table column => file column position
+            'content' => 0,
+        ];
+
+        //Act
+        $options = [
+            'separator' => ',',
+            'chunkSize' => 1000,
+            'hasHeader' => false,
+        ];
+        $result = $this->_repository->importFile($path, $columns, null, $options);
+
+        //Assert
+        $this->assertEquals(100, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 100000);
+    }
+
+    public function test_import_file_1000000_lines()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_1000000.csv';
+        $columns = [
+            //table column => file column position
+            'content' => 0,
+        ];
+
+        //Act
+        $result = $this->_repository->importFile($path, $columns);
+
+        //Assert
+        $this->assertEquals(1000, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 1000000);
+    }
+
+    public function test_import_file_with_row_generator()
+    {
+        //Prepare
+        $path = __DIR__ . '/import_file_100.csv';
+
+        //Act
+        $rowGenerator = function($line){
+            return [
+                //table column => file column position
+                'content' => $line[0],
+                'created_at' => '1800-01-01 00:00:00',
+                'updated_at' => $line[2]
+            ];
+        };
+        $options = [
+            'chunkSize' => 50,
+            'hasHeader' => true,
+        ];
+        $result = $this->_repository->importFile($path, [], $rowGenerator, $options);
+
+        //Assert
+        $this->assertEquals(2, $result);
+        $this->assertDatabaseCount(\Duardaum\LaravelRepository\Models\Message::class, 100);
+        $this->assertDatabaseHas(\Duardaum\LaravelRepository\Models\Message::class, ['created_at' => '1800-01-01 00:00:00']);
     }
 
     public function test_update_method()

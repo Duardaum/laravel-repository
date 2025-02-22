@@ -22,7 +22,7 @@ interface BaseRepositoryInterface
      *
      * @return int Number of the batch inserted
      */
-    public function importFile(string $path, array $columns, ?callable $rowGenerate, null|\stdClass|array $options): int;
+    public function importFile(string $path, array $columns, ?callable $rowGenerate = null, null|\stdClass|array $options = null): int;
 
     public function update(array $data, int|string $id): int;
 
