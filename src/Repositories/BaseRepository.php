@@ -53,7 +53,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
          */
         $opt->separator = ($opt->separator ?? ',');
         $opt->chunkSize = (isset($opt->chunkSize) ? min($opt->chunkSize, 1000) : 1000);
-        $opt->hasHeader = (isset($opt->hasHeader) && (bool)$opt->hasHeader);
+        $opt->hasHeader = (isset($opt->hasHeader) && (bool) $opt->hasHeader);
 
         $batchs = 0;
         foreach(self::generateDataToImport($path, $columns, $rowGenerate, $opt) as $data)
